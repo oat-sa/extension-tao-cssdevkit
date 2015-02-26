@@ -21,8 +21,10 @@
 
 namespace oat\taoCssDevKit\controller;
 
+use oat\taoCssDevKit\model\CssBatchTool;
 /**
- * Sample controller
+ * Css Manager controller,
+ * to apply css to all items
  *
  * @author Open Assessment Technologies SA
  * @package taoCssDevKit
@@ -43,13 +45,15 @@ class CssManager extends \tao_actions_CommonModule {
      */
     public function index() {
         // shows the upload/dowload options
-        $this->setData('author', 'Open Assessment Technologies SA');
         $this->setView('CssManager/index.tpl');
     }
     
-    public function upload() {
-        //upload css and apply to all items
-        // all items? or just QTI?
+    public function apply() {
+        
+        $cssFile = $file = \tao_helpers_Http::getUploadedFile('css');
+        $batchTool = new CssBatchTool($cssFile);
+        $report = $batchTool->applyToClass(taoItems_models_classes_ItemsService::singleton()->getRootClass());
+        $this->returnReport($report);
     }
     
     public function download() {
@@ -57,6 +61,7 @@ class CssManager extends \tao_actions_CommonModule {
     }
     
     public function reset() {
+        //reset all custom CSS in the items
     }
     
 }
