@@ -1,75 +1,53 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA;
- *               
- * 
+ *
+ *
  */
 
 namespace oat\taoCssDevKit\controller;
 
-use oat\taoCssDevKit\model\CssBatchTool;
-/**
- * Css Manager controller,
- * to apply css to all items
- *
- * @author Open Assessment Technologies SA
- * @package taoCssDevKit
- * @license GPL-2.0
- *
- */
-class CssManager extends \tao_actions_CommonModule {
+use oat\taoCssDevKit\model\Base64Converter as Base64ConverterModel;
 
-    /**
-     * initialize the services
-     */
-    public function __construct(){
-        parent::__construct();
-    }
+
+class Base64Converter extends \tao_actions_CommonModule {
+
+
 
     /**
      * A possible entry point to tao
      */
     public function index() {
         // shows the upload/download options
-        $this->setView('CssManager/index.tpl');
+        $this->setView('CssManager/base64.tpl');
     }
 
     /**
+     * Convert uploaded resource to base 64 code
      *
+     * @return mixed
      */
-    public function apply() {
-        $cssFile = $file = \tao_helpers_Http::getUploadedFile('content');
+    public function convert() {
 
-        $this -> returnJson(array('success' => 'The CSS file has been applied'));
+        $resource = $file = \tao_helpers_Http::getUploadedFile('content');
 
-        return;
+        $base64Converter = new Base64ConverterModel($resource);
 
-
-        $batchTool = new CssBatchTool($cssFile['tmp_name']);
-        $report = $batchTool->applyToClass(taoItems_models_classes_ItemsService::singleton()->getRootClass());
-        $this->returnReport($report);
+        $this -> returnJson($base64Converter->convertToBase64());
     }
 
-
-    /**
-     *
-     */
-    public function reset() {
-        //reset all custom CSS in the items
-    }
-    
-}
+} 
