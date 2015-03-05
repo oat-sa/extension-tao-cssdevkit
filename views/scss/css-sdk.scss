@@ -13,11 +13,3 @@
         font: 12px $monospaceFont;
     }
 }
-
-.css-report .report {
-    display:table;
-    padding: 20px;
-    h2 {
-        @include font-size(15);
-    }
-}

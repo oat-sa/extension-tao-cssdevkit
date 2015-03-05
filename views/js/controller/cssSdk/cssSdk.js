@@ -35,7 +35,9 @@ define([
         var cssContainer = $('#css-container');
 
         cssContainer.on('upload.uploader', function (e, file, interactionHook) {
-            $('.css-report .report').html(reportTpl(interactionHook)).addClass('feedback-' + interactionHook.type);
+
+            feedback()[interactionHook.type](reportTpl(interactionHook),
+                {timeout: {  info: 6000, success: 6000, warning: 6000, error: 6000}});
         });
 
         cssContainer.on('fail.uploader', function (e, file, interactionHook) {
