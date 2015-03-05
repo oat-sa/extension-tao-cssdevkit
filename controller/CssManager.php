@@ -52,11 +52,15 @@ class CssManager extends \tao_actions_CommonModule {
      *
      */
     public function apply() {
-        $cssFile = $file = \tao_helpers_Http::getUploadedFile('content');
+        $cssFileData = $file = \tao_helpers_Http::getUploadedFile('content');
 
-        $batchTool = new CssBatchTool($cssFile['tmp_name']);
-        $report = $batchTool->applyToClass(taoItems_models_classes_ItemsService::singleton()->getRootClass());
-        $this->returnReport($report);
+        $batchTool = new CssBatchTool($cssFileData);
+        $report = $batchTool->applyToClass(\taoItems_models_classes_ItemsService::singleton()->getRootClass());
+
+        $this->setData('report', $report);
+        $this->setData('title', __('Error'));
+        $this->setView('report.tpl', 'tao');
+        
     }
 
 
