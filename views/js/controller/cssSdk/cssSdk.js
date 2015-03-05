@@ -26,25 +26,16 @@ define([
     'i18n',
     'ui',
     'ui/uploader',
-    'ui/feedback'],
-    function ($, __, ui, uploader, feedback) {
+    'ui/feedback',
+    'tpl!taoCssDevKit/controller/templates/report'
+],
+    function ($, __, ui, uploader, feedback, reportTpl) {
 
         // upload and apply a css file to multiple items
         var cssContainer = $('#css-container');
 
-//        cssContainer.on('create.uploader', function (e, file, interactionHook) {
-//            var $undoBtn = $('<button>', {
-//                disabled: 'disabled',
-//                'class': 'btn-info small',
-//                text: 'Undo'
-//            }).prepend($('<span>', {
-//                'class' : 'icon-undo'
-//                }));
-//            cssContainer.find('button').last().after($undoBtn);
-//        });
-
         cssContainer.on('upload.uploader', function (e, file, interactionHook) {
-            feedback().success(interactionHook.success);
+            $('.css-report .report').html(reportTpl(interactionHook)).addClass('feedback-' + interactionHook.type);
         });
 
         cssContainer.on('fail.uploader', function (e, file, interactionHook) {

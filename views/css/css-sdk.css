@@ -25,4 +25,11 @@ DO NOT EDIT!     * *      '-'-'\_      /'._.'
   max-width: none;
   font: 12px Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace; }
 
+.css-report .report {
+  display: table;
+  padding: 20px; }
+  .css-report .report h2 {
+    font-size: 15px;
+    font-size: 1.5rem; }
+
 /*# sourceMappingURL=css-sdk.css.map */

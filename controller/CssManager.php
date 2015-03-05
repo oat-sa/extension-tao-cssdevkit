@@ -58,7 +58,6 @@ class CssManager extends \tao_actions_CommonModule {
         $report = $batchTool->applyToClass(\taoItems_models_classes_ItemsService::singleton()->getRootClass(), $cssFileData['name']);
 
         $this->returnJson($report);
-        
     }
 
 

@@ -20,6 +20,8 @@ use oat\tao\helpers\Template;
             <div id="css-container" data-url="<?=_url('apply', 'CssManager');?>"></div>
         </div>
     </div>
+</div>
 
-    
+<div class="data-container-wrapper flex-container-remaining css-report">
+    <div class="report"></div>
 </div>

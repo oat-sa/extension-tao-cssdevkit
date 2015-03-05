@@ -50,7 +50,9 @@ class CssBatchTool {
      * Apply css to all instances of this class and its subclasses
      *
      * @param \core_kernel_classes_Class $class
+     * @param $destPath, optional
      * @return \common_report_Report
+     * @throws \common_exception_Error
      */
     public function applyToClass(\core_kernel_classes_Class $class, $destPath = null) {
         $destPath = is_null($destPath) ? basename($this->cssFile) : $destPath; 
@@ -75,7 +77,7 @@ class CssBatchTool {
                 }
             }
         }
-        $report->setMessage($count > 0 ? __('Applied to %s items', $count) : __('CSS was not applied to any items'));
+        $report->setMessage($count > 0 ? __('%s has been applied to %s items', basename($destPath), $count) : __('CSS was not applied to any items'));
         return $report;
     }
 
@@ -83,6 +85,7 @@ class CssBatchTool {
      * Apply the css to this item
      *
      * @param \core_kernel_classes_Resource $item
+     * @param $destPath
      * @return \common_report_Report
      */
     public function applyToItem(\core_kernel_classes_Resource $item, $destPath) {
@@ -98,19 +101,18 @@ class CssBatchTool {
                 $manager->add($this->cssFile, $destPath, '');
 
                 $itemService->setItemContent($item, $modifiedXml, $lang);
-                return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, __('Applied CSS to %s', $item->getLabel()));
+                return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, $item->getLabel());
 
             } else {
-                return new \common_report_Report(\common_report_Report::TYPE_INFO, __('No item content for %s', $item->getLabel()));
+                return new \common_report_Report(\common_report_Report::TYPE_INFO, $item->getLabel());
             }
         }
     }
 
     /**
-     *
-     * @param string $xml
-     * @throws CssFoundException
-     * @return string
+     * @param $xml
+     * @param $cssName
+     * @return mixed
      */
     protected function applyToXml($xml, $cssName) {
         $xml = new \SimpleXMLElement($xml);
