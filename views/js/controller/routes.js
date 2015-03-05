@@ -30,7 +30,7 @@ define(function(){
         },
         'Base64Converter' : {
             'actions' : {
-                'index' : 'controller/cssSdk/base64converter'
+                'index' : 'controller/cssSdk/base64Converter'
             }
         }
     };
