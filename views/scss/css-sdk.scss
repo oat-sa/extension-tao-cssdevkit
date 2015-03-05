@@ -1,0 +1,15 @@
+@import "inc/bootstrap";
+.css-sdk {
+    h2 {
+        @include font-size(14);
+        margin: 20px 0 5px 0;
+    }
+}
+
+.base-64-converter {
+    textarea {
+        display: block;
+        max-width: none;
+        font: 12px $monospaceFont;
+    }
+}

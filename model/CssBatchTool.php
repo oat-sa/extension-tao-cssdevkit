@@ -20,20 +20,21 @@
 
 namespace oat\taoCssDevKit\model;
 
+
 /**
  * Script to batch apply a stylesheet to a number of items
  */
 class CssBatchTool {
-    
+
     /**
-     * Path to css file
+     * CSS file
      * @var string
      */
     private $cssFile;
-    
+
     /**
      * Init new Batch tool
-     * 
+     *
      * @param string $cssFile
      * @throws \common_exception_Error
      */
@@ -41,56 +42,63 @@ class CssBatchTool {
         if(!is_file($cssFile)) {
             throw new \common_exception_Error('CSS file ' . $cssFile . ' not found');
         }
+
         $this->cssFile = $cssFile;
     }
-    
+
     /**
      * Apply css to all instances of this class and its subclasses
-     * 
+     *
      * @param \core_kernel_classes_Class $class
      * @return \common_report_Report
      */
-    public function applyToClass(\core_kernel_classes_Class $class) {
+    public function applyToClass(\core_kernel_classes_Class $class, $destPath = null) {
+        $destPath = is_null($destPath) ? basename($this->cssFile) : $destPath; 
+        
+        if(strtolower(substr(strrchr($destPath, '.'), 1)) !== 'css') {
+            throw new \common_exception_Error($destPath . ' does not appear to be a stylesheet');
+        }
+        
         $report = new \common_report_Report(\common_report_Report::TYPE_SUCCESS);
-        $itemItertator = new \core_kernel_classes_ResourceIterator(array($class));
+        $itemIterator = new \core_kernel_classes_ResourceIterator(array($class));
         $count = 0;
-        foreach ($itemItertator as $item) {
+        foreach ($itemIterator as $item) {
             // is QTI?
             $model = \taoItems_models_classes_ItemsService::singleton()->getItemModel($item);
             if ($model->getUri() == TAO_ITEM_MODEL_QTI) {
-                $subreport = $this->applyToItem($item);
-                $report->add($subreport);
-                if ($subreport->getType() == \common_report_Report::TYPE_SUCCESS) {
+                $subReport = $this->applyToItem($item, $destPath);
+                $report->add($subReport);
+                if ($subReport->getType() == \common_report_Report::TYPE_SUCCESS) {
                     $count++;
                 } else {
-                    $report->setType($subreport->getType());
+                    $report->setType($subReport->getType());
                 }
             }
         }
-        $report->setMessage($count > 0 ? __('Applied to %s items', $count) : __('Css was not applied to any items')); 
+        $report->setMessage($count > 0 ? __('Applied to %s items', $count) : __('CSS was not applied to any items'));
         return $report;
     }
-    
+
     /**
      * Apply the css to this item
-     * 
+     *
      * @param \core_kernel_classes_Resource $item
      * @return \common_report_Report
      */
-    public function applyToItem(\core_kernel_classes_Resource $item) {
+    public function applyToItem(\core_kernel_classes_Resource $item, $destPath) {
         $itemService = \taoItems_models_classes_ItemsService::singleton();
         $availableLangs = array(DEFAULT_LANG);
         foreach ($availableLangs as $lang) {
             if ($itemService->hasItemContent($item, $lang)) {
-                
-                // get the new 
-                $modifiedXml = $this->applyToXml($itemService->getItemContent($item), $lang);
-                
+
+                // get the new
+                $modifiedXml = $this->applyToXml($itemService->getItemContent($item), $destPath);
+
                 $manager = new \taoItems_helpers_ResourceManager(array('item'=> $item , 'lang' => $lang));
-                $manager->add($this->cssFile, basename($this->cssFile), '');
-                
+                $manager->add($this->cssFile, $destPath, '');
+
                 $itemService->setItemContent($item, $modifiedXml, $lang);
-                return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, __('Applied css to %s', $item->getLabel()));
+                return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, __('Applied CSS to %s', $item->getLabel()));
 
             } else {
                 return new \common_report_Report(\common_report_Report::TYPE_INFO, __('No item content for %s', $item->getLabel()));
@@ -99,15 +107,14 @@ class CssBatchTool {
     }
 
     /**
-     * 
+     *
      * @param string $xml
      * @throws CssFoundException
      * @return string
      */
-    protected function applyToXml($xml) {
+    protected function applyToXml($xml, $cssName) {
         $xml = new \SimpleXMLElement($xml);
-        
-        $cssName = basename($this->cssFile);
+
         $addStyleNode = true;
         foreach($xml[0]->stylesheet as $stylesheet) {
             if((string)$stylesheet->attributes() -> href === $cssName) {
@@ -115,10 +122,10 @@ class CssBatchTool {
                 break;
             }
         }
-        
+
         if($addStyleNode) {
             $css = $xml->addChild('stylesheet', '');
-            $css -> addAttribute('href', basename($this->cssFile));
+            $css -> addAttribute('href', $cssName);
             $css -> addAttribute('type','text/css');
             $css -> addAttribute('media','all');
             $css -> addAttribute('title','');

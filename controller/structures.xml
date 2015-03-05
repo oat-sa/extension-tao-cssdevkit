@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE structures SYSTEM "../doc/structures.dtd">
 <structures>
-    <structure id="tools" name="Settings" level="8" group="settings">
+    <structure id="tools" name="Tools" level="8" group="settings">
         <description/>
         <icon id="icon-tools" src=""/>
         <sections>
-            <section id="settings_css" name="Css Dev Kit" url="/taoCssDevKit/CssManager/index"
-                     policy="override"/>
+            <section id="tool_css" name="CSS Dev Kit" url="/taoCssDevKit/CssManager/index" policy="override"/>
+            <section id="tool_base64" name="Base-64 Converter" url="/taoCssDevKit/Base64Converter/index"/>
         </sections>
     </structure>
 </structures>
