@@ -67,7 +67,7 @@ class CssBatchTool {
         foreach ($itemIterator as $item) {
             // is QTI?
             $model = \taoItems_models_classes_ItemsService::singleton()->getItemModel($item);
-            if ($model->getUri() == TAO_ITEM_MODEL_QTI) {
+            if (!is_null($model) && $model->getUri() == TAO_ITEM_MODEL_QTI) {
                 $subReport = $this->applyToItem($item, $destPath);
                 $report->add($subReport);
                 if ($subReport->getType() == \common_report_Report::TYPE_SUCCESS) {
@@ -77,7 +77,7 @@ class CssBatchTool {
                 }
             }
         }
-        $report->setMessage($count > 0 ? __('%s has been applied to %s items', basename($destPath), $count) : __('CSS was not applied to any items'));
+        $report->setMessage($count > 0 ? __('%1s has been applied to %2s items', basename($destPath), $count) : __('CSS was not applied to any items'));
         return $report;
     }
 
