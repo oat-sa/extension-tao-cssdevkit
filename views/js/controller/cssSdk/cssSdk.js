@@ -59,7 +59,7 @@ define([
             }
 
             feedback()[interactionHook.type](reportTpl(interactionHook),
-                {timeout: {  info: 6000, success: 66000, warning: 6000, error: 6000}});
+                {timeout: {  info: 6000, success: 6000, warning: 6000, error: 6000}});
         });
 
         cssContainer.on('fail.uploader', function (e, file, interactionHook) {
