@@ -26,25 +26,40 @@ define([
     'i18n',
     'ui',
     'ui/uploader',
-    'ui/feedback'],
-    function ($, __, ui, uploader, feedback) {
+    'ui/feedback',
+    'tpl!taoCssDevKit/controller/templates/report'
+],
+    function ($, __, ui, uploader, feedback, reportTpl) {
 
         // upload and apply a css file to multiple items
         var cssContainer = $('#css-container');
 
-//        cssContainer.on('create.uploader', function (e, file, interactionHook) {
-//            var $undoBtn = $('<button>', {
-//                disabled: 'disabled',
-//                'class': 'btn-info small',
-//                text: 'Undo'
-//            }).prepend($('<span>', {
-//                'class' : 'icon-undo'
-//                }));
-//            cssContainer.find('button').last().after($undoBtn);
-//        });
-
         cssContainer.on('upload.uploader', function (e, file, interactionHook) {
-            feedback().success(interactionHook.success);
+
+            var i = interactionHook.children.length;
+
+            while(i--) {
+                switch(interactionHook.children[i].type) {
+                    case 'success':
+                        interactionHook.type = 'success';// overwrite 'info'
+                        interactionHook.children[i].icon = '✓'
+                        break;
+
+                    case 'error':
+                        interactionHook.type = 'error';
+                        interactionHook.children[i].icon = '⚠'
+                        break;
+
+                    case 'info':
+                        interactionHook.children[i].message = interactionHook.children[i].message.replace(' (n/a)', '');
+                        interactionHook.children[i].icon = '∅'
+                        break;
+                }
+
+            }
+
+            feedback()[interactionHook.type](reportTpl(interactionHook),
+                {timeout: {  info: 6000, success: 6000, warning: 6000, error: 6000}});
         });
 
         cssContainer.on('fail.uploader', function (e, file, interactionHook) {

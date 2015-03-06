@@ -20,6 +20,4 @@ use oat\tao\helpers\Template;
             <div id="css-container" data-url="<?=_url('apply', 'CssManager');?>"></div>
         </div>
     </div>
-
-    
 </div>
