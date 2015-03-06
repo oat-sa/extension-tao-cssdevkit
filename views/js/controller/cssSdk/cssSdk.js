@@ -36,8 +36,30 @@ define([
 
         cssContainer.on('upload.uploader', function (e, file, interactionHook) {
 
+            var i = interactionHook.children.length;
+
+            while(i--) {
+                switch(interactionHook.children[i].type) {
+                    case 'success':
+                        interactionHook.type = 'success';// overwrite 'info'
+                        interactionHook.children[i].icon = '✓'
+                        break;
+
+                    case 'error':
+                        interactionHook.type = 'error';
+                        interactionHook.children[i].icon = '⚠'
+                        break;
+
+                    case 'info':
+                        interactionHook.children[i].message = interactionHook.children[i].message.replace(' (n/a)', '');
+                        interactionHook.children[i].icon = '∅'
+                        break;
+                }
+
+            }
+
             feedback()[interactionHook.type](reportTpl(interactionHook),
-                {timeout: {  info: 6000, success: 6000, warning: 6000, error: 6000}});
+                {timeout: {  info: 6000, success: 66000, warning: 6000, error: 6000}});
         });
 
         cssContainer.on('fail.uploader', function (e, file, interactionHook) {

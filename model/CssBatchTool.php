@@ -104,7 +104,7 @@ class CssBatchTool {
                 return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, $item->getLabel());
 
             } else {
-                return new \common_report_Report(\common_report_Report::TYPE_INFO, $item->getLabel());
+                return new \common_report_Report(\common_report_Report::TYPE_INFO, $item->getLabel() . ' (n/a)');
             }
         }
     }
