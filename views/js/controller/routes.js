@@ -27,11 +27,6 @@ define(function(){
             'actions' : {
                 'index' : 'controller/cssSdk/cssSdk'
             }
-        },
-        'Base64Converter' : {
-            'actions' : {
-                'index' : 'controller/cssSdk/base64Converter'
-            }
         }
     };
 });
