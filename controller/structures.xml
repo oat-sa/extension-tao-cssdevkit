@@ -6,7 +6,6 @@
         <icon id="icon-tools" src=""/>
         <sections>
             <section id="tool_css" name="CSS Dev Kit" url="/taoCssDevKit/CssManager/index" policy="override"/>
-            <section id="tool_base64" name="Base-64 Converter" url="/taoCssDevKit/Base64Converter/index"/>
         </sections>
     </structure>
 </structures>
