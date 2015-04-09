@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.0-RC04\n"
-"PO-Revision-Date: 2015-03-06T16:00:18\n"
+"Project-Id-Version: TAO 3.0-RC05\n"
+"PO-Revision-Date: 2015-04-09T09:21:08\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: en-US\n"
@@ -17,19 +17,6 @@ msgid "%1s has been applied to %2s items', basename($destPath), $count) : __('CS
 msgstr ""
 
 msgid "Apply CSS to Items"
-msgstr ""
-
-#, tao-public
-msgid "Base-64 Converter"
-msgstr ""
-
-msgid "Base64 Converter"
-msgstr ""
-
-msgid "Base64 Data URI"
-msgstr ""
-
-msgid "Convert to Base64 Code"
 msgstr ""
 
 #, tao-public
