@@ -14,12 +14,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2014-2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
 
 namespace oat\taoCssDevKit\model;
 
+use oat\taoCssDevKit\helpers\Utils;
 
 /**
  * Script to batch apply a stylesheet to a number of items
@@ -115,23 +116,10 @@ class CssBatchTool {
      * @return mixed
      */
     protected function applyToXml($xml, $cssName) {
-        $xml = new \SimpleXMLElement($xml);
-
-        $addStyleNode = true;
-        foreach($xml[0]->stylesheet as $stylesheet) {
-            if((string)$stylesheet->attributes() -> href === $cssName) {
-                $addStyleNode = false;
-                break;
-            }
-        }
-
-        if($addStyleNode) {
-            $css = $xml->addChild('stylesheet', '');
-            $css -> addAttribute('href', $cssName);
-            $css -> addAttribute('type','text/css');
-            $css -> addAttribute('media','all');
-            $css -> addAttribute('title','');
-        }
-        return $xml->asXML();
+        $xml = new \DOMDocument('1.0', 'UTF-8');
+        $xml->loadXML($xml);
+        
+        Utils::appendStylesheet($xml, $cssName);
+        return $xml->saveXML(LIBXML_NOEMPTYTAG);
     }
 }
