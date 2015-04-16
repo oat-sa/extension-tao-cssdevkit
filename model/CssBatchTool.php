@@ -116,10 +116,10 @@ class CssBatchTool {
      * @return mixed
      */
     protected function applyToXml($xml, $cssName) {
-        $xml = new \DOMDocument('1.0', 'UTF-8');
-        $xml->loadXML($xml);
+        $doc = new \DOMDocument('1.0', 'UTF-8');
+        $doc->loadXML($xml);
         
-        Utils::appendStylesheet($xml, $cssName);
-        return $xml->saveXML(LIBXML_NOEMPTYTAG);
+        Utils::appendStylesheet($doc, $cssName);
+        return $doc->saveXML();
     }
 }
