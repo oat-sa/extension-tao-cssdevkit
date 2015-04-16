@@ -67,6 +67,28 @@ class UtilsTest extends TaoPhpUnitTestRunner
         $this->assertEquals('text/css', $stylesheet->getAttribute('type'));
         $this->assertEquals('', $stylesheet->getAttribute('title'));
     }
+    
+    public function testAppendStylesheetWithInvalidItem() {
+        $sampleSrc = dirname(__FILE__) . '/samples/invalid.xml';
+        $doc = new \DOMDocument('1.0', 'UTF-8');
+        $doc->load($sampleSrc);
+        
+        // Assert there are some stylesheets (at the wrong place here).
+        $this->assertEquals(2, $doc->documentElement->getElementsByTagName('stylesheet')->length);
+        // Should be a child of assessmentItem (that's bad)...
+        $this->assertEquals('assessmentItem', $doc->documentElement->getElementsByTagName('stylesheet')->item(0)->parentNode->tagName);
+        
+        Utils::appendStylesheet($doc, 'proot.css');
+        
+        // Only 1 stylesheet should be found, as a previous sibling of itemBody.
+        $this->assertEquals(1, $doc->documentElement->getElementsByTagName('stylesheet')->length);
+        
+        $stylesheet = $doc->documentElement->getElementsByTagName('stylesheet')->item(0);
+        $this->assertEquals('proot.css', $stylesheet->getAttribute('href'));
+        $this->assertEquals('all', $stylesheet->getAttribute('media'));
+        $this->assertEquals('text/css', $stylesheet->getAttribute('type'));
+        $this->assertEquals('', $stylesheet->getAttribute('title'));
+    }
 }
 
 ?>

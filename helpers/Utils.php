@@ -75,5 +75,22 @@ class Utils
             
             $root->insertBefore($newStylesheetElt, $itemBodyElts->item(0));
         }
+        
+        // Dirty fix... Cleanup old stylesheets that were at the end of the file,
+        // making the validation to fail.
+        $responseProcessingElts = $root->getElementsByTagName('responseProcessing');
+        if ($responseProcessingElts->length === 1) {
+            $responseProcessingElt = $responseProcessingElts->item(0);
+            
+            $target = $responseProcessingElt;
+            
+            while ($sibling = $target->nextSibling) {
+                if ($sibling->nodeType === XML_ELEMENT_NODE && $sibling->tagName === 'stylesheet') {
+                    $sibling->parentNode->removeChild($sibling);
+                } else {
+                    $target = $sibling;
+                }
+            }
+        }
     }
 }
