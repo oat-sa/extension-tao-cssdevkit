@@ -24,11 +24,12 @@ return array(
 	'label' => 'Css Development Kit',
 	'description' => '',
     'license' => 'GPL-2.0',
-    'version' => '0.9',
+    'version' => '0.9.1',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array('taoQtiItem' => '>=2.7.3', 'taoDataUri' => '>=0.0.0'),
 	// for compatibility
 	'dependencies' => array('tao'),
+    'update' => 'oat\\taoCssDevKit\\scripts\\update\\Updater',
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoCssDevKitManager',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoCssDevKitManager', array('ext'=>'taoCssDevKit')),

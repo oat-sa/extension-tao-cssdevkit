@@ -24,7 +24,8 @@ use oat\taoCssDevKit\helpers\Utils;
 
 class UtilsTest extends TaoPhpUnitTestRunner
 {
-    public function testAppendStylesheetNoPreviousStylesheets() {
+    public function testAppendStylesheetNoPreviousStylesheets() 
+    {
         $sampleSrc = dirname(__FILE__) . '/samples/choice.xml';
         $doc = new \DOMDocument('1.0', 'UTF-8');
         $doc->load($sampleSrc);
@@ -46,7 +47,8 @@ class UtilsTest extends TaoPhpUnitTestRunner
         $this->assertEquals('', $stylesheet->getAttribute('title'));
     }
     
-    public function testAppendStylesheetAfterCleanup() {
+    public function testAppendStylesheetAfterCleanup() 
+    {
         $sampleSrc = dirname(__FILE__) . '/samples/stylesheets.xml';
         $doc = new \DOMDocument('1.0', 'UTF-8');
         $doc->load($sampleSrc);
@@ -68,7 +70,8 @@ class UtilsTest extends TaoPhpUnitTestRunner
         $this->assertEquals('', $stylesheet->getAttribute('title'));
     }
     
-    public function testAppendStylesheetWithInvalidItem() {
+    public function testAppendStylesheetWithInvalidItem() 
+    {
         $sampleSrc = dirname(__FILE__) . '/samples/invalid.xml';
         $doc = new \DOMDocument('1.0', 'UTF-8');
         $doc->load($sampleSrc);
@@ -88,6 +91,33 @@ class UtilsTest extends TaoPhpUnitTestRunner
         $this->assertEquals('all', $stylesheet->getAttribute('media'));
         $this->assertEquals('text/css', $stylesheet->getAttribute('type'));
         $this->assertEquals('', $stylesheet->getAttribute('title'));
+    }
+    
+    /**
+     * @dataProvider getStylesheetHrefsProvider
+     */
+    public function testGetStylesheetHrefs(\DOMDocument $doc, array $expected) 
+    {
+        $this->assertEquals($expected, Utils::getStylesheetHrefs($doc));
+    }
+    
+    public function getStylesheetHrefsProvider()
+    {
+        $data = array();
+        
+        $doc = new \DOMDocument('1.0', 'UTF-8');
+        $doc->load(dirname(__FILE__) . '/samples/invalid.xml');
+        $data[] = array($doc, array('ministere.css', 'ministeres.css'));    
+        
+        $doc = new \DOMDocument('1.0', 'UTF-8');
+        $doc->load(dirname(__FILE__) . '/samples/choice.xml');
+        $data[] = array($doc, array());
+        
+        $doc = new \DOMDocument('1.0', 'UTF-8');
+        $doc->load(dirname(__FILE__) . '/samples/stylesheets.xml');
+        $data[] = array($doc, array('one.css', 'two.css'));    
+        
+        return $data;
     }
 }
 

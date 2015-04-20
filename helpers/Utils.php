@@ -93,4 +93,24 @@ class Utils
             }
         }
     }
+    
+    /**
+     * Get all href attribute values from any stylesheet element from $doc.
+     * 
+     * @param \DOMDocument $doc
+     * @return array
+     */
+    static public function getStylesheetHrefs(\DOMDocument $doc) {
+        $stylesheetElts = $doc->documentElement->getElementsByTagName('stylesheet');
+        $hrefs = array();
+        
+        for ($i = 0; $i < $stylesheetElts->length; $i++) {
+            $href = $stylesheetElts->item($i)->getAttribute('href');
+            if (!empty($href)) {
+                $hrefs[] = $href;
+            }
+        }
+        
+        return $hrefs;
+    }
 }
