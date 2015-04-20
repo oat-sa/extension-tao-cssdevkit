@@ -60,50 +60,52 @@ class Updater extends \common_ext_ExtensionUpdater
             if ($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))) {
                 $path = $itemService->getDefaultItemFolder($item);
                 $qtiXml = $itemService->getItemContent($item);
-                $qtiDom = new \DOMDocument('1.0', 'UTF-8');
-                $qtiDom->loadXML($qtiXml);
                 
-                // Get all stylesheet hrefs.
-                $hrefs = Utils::getStylesheetHrefs($qtiDom);
-                
-                // Make sure the hrefs are refering existing files.
-                for ($i = 0; $i < count($hrefs); $i++) {
-                    $href = $hrefs[$i];
-                    if (is_readable($path . $href) === false) {
-                        \common_Logger::i("The stylesheet->href '${path}.${href}' does not reference an existing file. Trying to repair...");
-                        
-                        // Let's try with another name...
-                        $pathinfo = pathinfo($href);
-                        $altFileName = \tao_helpers_File::getSafeFileName($pathinfo['basename']);
-                        $dirSep = ($pathinfo['dirname'] !== '.') ? $pathInfo['dirname'] . DIRECTORY_SEPARATOR : '';
-                        $altPath = $path. $dirSep . $altFileName;
-                        
-                        if (is_readable($altPath)) {
-                            // Bingo! We rebind.
-                            $hrefs[$i] = $dirSep . $altFileName;
-                            \common_Logger::i("Repaired with new href '${dirSep}.${altFileName}}'.");
-                        } else {
-                            // It's definitely broken...
-                            unset($hrefs[$i]);
-                            \common_Logger::i("Could not be repaired! QTI stylesheet component removed from item.");
+                if (empty($qtiXml) === false) {
+                    $qtiDom = new \DOMDocument('1.0', 'UTF-8');
+                    $qtiDom->loadXML($qtiXml);
+                    
+                    // Get all stylesheet hrefs.
+                    $hrefs = Utils::getStylesheetHrefs($qtiDom);
+                    
+                    // Make sure the hrefs are refering existing files.
+                    for ($i = 0; $i < count($hrefs); $i++) {
+                        $href = $hrefs[$i];
+                        if (is_readable($path . $href) === false) {
+                            \common_Logger::i("The stylesheet->href '${path}.${href}' does not reference an existing file. Trying to repair...");
+                    
+                            // Let's try with another name...
+                            $pathinfo = pathinfo($href);
+                            $altFileName = \tao_helpers_File::getSafeFileName($pathinfo['basename']);
+                            $dirSep = ($pathinfo['dirname'] !== '.') ? $pathInfo['dirname'] . DIRECTORY_SEPARATOR : '';
+                            $altPath = $path. $dirSep . $altFileName;
+                    
+                            if (is_readable($altPath)) {
+                                // Bingo! We rebind.
+                                $hrefs[$i] = $dirSep . $altFileName;
+                                \common_Logger::i("Repaired with new href '${dirSep}.${altFileName}}'.");
+                            } else {
+                                // It's definitely broken...
+                                unset($hrefs[$i]);
+                                \common_Logger::i("Could not be repaired! QTI stylesheet component removed from item.");
+                            }
                         }
-                        
                     }
+                    
+                    // Reput them in the item with cleanup enabled
+                    // to solve the XMLSchema validation issue.
+                    if (count($hrefs) > 0) {
+                        $href = array_shift($hrefs);
+                        Utils::appendStylesheet($qtiDom, $href, true);
+                    }
+                    
+                    // Append the rest of the stylesheets.
+                    foreach ($hrefs as $href) {
+                        Utils::appendStylesheet($qtiDom, $href);
+                    }
+                    
+                    $itemService->setItemContent($item, $qtiDom->saveXML());
                 }
-                
-                // Reput them in the item with cleanup enabled
-                // to solve the XMLSchema validation issue.
-                if (count($hrefs) > 0) {
-                    $href = array_shift($hrefs);
-                    Utils::appendStylesheet($qtiDom, $href, true);
-                }
-                
-                // Append the rest of the stylesheets.
-                foreach ($hrefs as $href) {
-                    Utils::appendStylesheet($qtiDom, $href);
-                }
-                
-                $itemService->setItemContent($item, $qtiDom->saveXML());
             }
         }
     }
