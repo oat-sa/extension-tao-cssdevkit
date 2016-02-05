@@ -24,7 +24,7 @@ return array(
 	'label' => 'Css Development Kit',
 	'description' => '',
     'license' => 'GPL-2.0',
-    'version' => '0.9.2',
+    'version' => '0.9.3',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array('taoQtiItem' => '>=2.7.3', 'taoDataUri' => '>=0.0.0'),
 	// for compatibility
