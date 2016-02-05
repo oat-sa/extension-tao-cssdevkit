@@ -52,7 +52,12 @@ class Updater extends \common_ext_ExtensionUpdater
         if ($currentVersion == '0.9.1') {
             $currentVersion = '0.9.2';
         }
-        return $currentVersion;
+        $this->setVersion($currentVersion);
+        
+        if($this->isVersion('0.9.2')){
+            $this->setVersion('0.9.3');
+        }
+        return null;
     }
     
     static private function migrateFrom09To091() {
