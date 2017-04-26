@@ -24,7 +24,7 @@ return array(
 	'label' => 'Css Development Kit',
 	'description' => '',
     'license' => 'GPL-2.0',
-    'version' => '0.9.3',
+    'version' => '1.0.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array('taoQtiItem' => '>=2.7.3', 'taoDataUri' => '>=0.0.0'),
 	// for compatibility
@@ -50,9 +50,6 @@ return array(
 	    
 		#BASE URL (usually the domain root)
 		'BASE_URL' => ROOT_URL.'taoCssDevKit/',
-	    
-	    #BASE WWW required by JS
-	    'BASE_WWW' => ROOT_URL.'taoCssDevKit/views/'
 	),
     'extra' => array(
         'structures' => dirname(__FILE__).DIRECTORY_SEPARATOR.'controller'.DIRECTORY_SEPARATOR.'structures.xml',
