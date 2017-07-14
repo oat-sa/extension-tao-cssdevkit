@@ -21,6 +21,7 @@
 namespace oat\taoCssDevKit\model;
 
 use oat\taoCssDevKit\helpers\Utils;
+use oat\taoQtiItem\model\qti\Service;
 
 /**
  * Script to batch apply a stylesheet to a number of items
@@ -96,12 +97,12 @@ class CssBatchTool {
             if ($itemService->hasItemContent($item, $lang)) {
 
                 // get the new
-                $modifiedXml = $this->applyToXml($itemService->getItemContent($item), $destPath);
+                $modifiedXml = $this->applyToXml(Service::singleton()->getDataItemByRdfItem($item)->toXML(), $destPath);
 
                 $manager = new \taoItems_helpers_ResourceManager(array('item'=> $item , 'lang' => $lang));
                 $manager->add($this->cssFile, $destPath, '');
 
-                $itemService->setItemContent($item, $modifiedXml, $lang);
+                Service::singleton()->saveXmlItemToRdfItem($modifiedXml, $item);
                 return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, $item->getLabel());
 
             } else {
