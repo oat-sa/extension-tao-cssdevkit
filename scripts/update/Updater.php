@@ -22,6 +22,7 @@
 namespace oat\taoCssDevKit\scripts\update;
 
 use oat\taoCssDevKit\helpers\Utils;
+use oat\taoQtiItem\model\qti\Service;
 
 /**
  * TAO CSS DevKit Updater.
@@ -69,12 +70,13 @@ class Updater extends \common_ext_ExtensionUpdater
         $itemClass = $itemService->getRootClass();
         foreach ($itemClass->getInstances(true) as $item) {
             if ($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))) {
-                $path = $itemService->getDefaultItemFolder($item);
-                $qtiXml = $itemService->getItemContent($item);
+                $qtiXml = Service::singleton()->getDataItemByRdfItem($item)->toXML();
                 
                 if (empty($qtiXml) === false) {
                     $qtiDom = new \DOMDocument('1.0', 'UTF-8');
                     $qtiDom->loadXML($qtiXml);
+
+                    $path = $itemService->getItemDirectory($item)->getPrefix();
                     
                     // Get all stylesheet hrefs.
                     $hrefs = Utils::getStylesheetHrefs($qtiDom);
@@ -84,11 +86,11 @@ class Updater extends \common_ext_ExtensionUpdater
                         $href = $hrefs[$i];
                         if (is_readable($path . $href) === false) {
                             \common_Logger::i("The stylesheet->href '${path}.${href}' does not reference an existing file. Trying to repair...");
-                    
+
                             // Let's try with another name...
                             $pathinfo = pathinfo($href);
                             $altFileName = \tao_helpers_File::getSafeFileName($pathinfo['basename']);
-                            $dirSep = ($pathinfo['dirname'] !== '.') ? $pathInfo['dirname'] . DIRECTORY_SEPARATOR : '';
+                            $dirSep = ($pathinfo['dirname'] !== '.') ? $pathinfo['dirname'] . DIRECTORY_SEPARATOR : '';
                             $altPath = $path. $dirSep . $altFileName;
                     
                             if (is_readable($altPath)) {
@@ -115,7 +117,7 @@ class Updater extends \common_ext_ExtensionUpdater
                         Utils::appendStylesheet($qtiDom, $href);
                     }
                     
-                    $itemService->setItemContent($item, $qtiDom->saveXML());
+                    Service::singleton()->saveXmlItemToRdfItem($qtiDom->saveXML(), $item);
                 }
             }
         }
