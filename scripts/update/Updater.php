@@ -23,6 +23,7 @@ namespace oat\taoCssDevKit\scripts\update;
 
 use oat\taoCssDevKit\helpers\Utils;
 use oat\taoQtiItem\model\qti\Service;
+use taoItems_models_classes_itemModel;
 
 /**
  * TAO CSS DevKit Updater.
@@ -59,7 +60,7 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('0.9.3');
         }
 
-        $this->skip('0.9.3', '1.0.2');
+        $this->skip('0.9.3', '1.0.3');
 
         return null;
     }
@@ -69,7 +70,7 @@ class Updater extends \common_ext_ExtensionUpdater
         $itemService = \taoItems_models_classes_ItemsService::singleton();
         $itemClass = $itemService->getRootClass();
         foreach ($itemClass->getInstances(true) as $item) {
-            if ($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))) {
+            if ($itemService->hasItemModel($item, array(taoItems_models_classes_itemModel::PROPERTY_QTI))) {
                 $qtiXml = Service::singleton()->getDataItemByRdfItem($item)->toXML();
                 
                 if (empty($qtiXml) === false) {
