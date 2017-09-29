@@ -70,7 +70,7 @@ class CssBatchTool {
         foreach ($itemIterator as $item) {
             // is QTI?
             $model = \taoItems_models_classes_ItemsService::singleton()->getItemModel($item);
-            if (!is_null($model) && $model->getUri() == taoItems_models_classes_itemModel::PROPERTY_QTI) {
+            if (!is_null($model) && $model->getUri() == taoItems_models_classes_itemModel::CLASS_URI_QTI) {
                 $subReport = $this->applyToItem($item, $destPath);
                 $report->add($subReport);
                 if ($subReport->getType() == \common_report_Report::TYPE_SUCCESS) {

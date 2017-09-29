@@ -70,7 +70,7 @@ class Updater extends \common_ext_ExtensionUpdater
         $itemService = \taoItems_models_classes_ItemsService::singleton();
         $itemClass = $itemService->getRootClass();
         foreach ($itemClass->getInstances(true) as $item) {
-            if ($itemService->hasItemModel($item, array(taoItems_models_classes_itemModel::PROPERTY_QTI))) {
+            if ($itemService->hasItemModel($item, array(taoItems_models_classes_itemModel::CLASS_URI_QTI))) {
                 $qtiXml = Service::singleton()->getDataItemByRdfItem($item)->toXML();
                 
                 if (empty($qtiXml) === false) {
