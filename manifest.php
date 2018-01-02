@@ -24,9 +24,13 @@ return array(
 	'label' => 'Css Development Kit',
 	'description' => '',
     'license' => 'GPL-2.0',
-    'version' => '1.0.2',
+    'version' => '1.1.0',
 	'author' => 'Open Assessment Technologies SA',
-	'requires' => array('taoQtiItem' => '>=2.7.3', 'taoDataUri' => '>=0.0.0'),
+	'requires' => array(
+	    'taoItems' => '>=5.3.1',
+	    'taoQtiItem' => '>=2.7.3',
+        'taoDataUri' => '>=0.0.0'
+    ),
 	// for compatibility
 	'dependencies' => array('tao'),
     'update' => 'oat\\taoCssDevKit\\scripts\\update\\Updater',

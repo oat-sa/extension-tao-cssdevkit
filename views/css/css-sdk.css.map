@@ -1,7 +1,14 @@
 {
-"version": 3,
-"mappings": "AAEI,WAAG,CCiOC,SAAS,CAAE,IAAc,CACzB,SAAS,CAAE,MAAoB,CDhO/B,MAAM,CAAE,YAAY",
-"sources": ["../scss/css-sdk.scss","../../../tao/views/scss/inc/_functions.scss"],
-"names": [],
-"file": "css-sdk.css"
+	"version": 3,
+	"file": "css-sdk.css",
+	"sources": [
+		"../scss/css-sdk.scss",
+		"../../../tao/views/scss/inc/_bootstrap.scss",
+		"../../../tao/views/scss/inc/_variables.scss",
+		"../../../tao/views/scss/inc/_functions.scss",
+		"../../../tao/views/scss/inc/_colors.scss",
+		"../../../tao/views/scss/inc/fonts/_tao-icon-vars.scss"
+	],
+	"names": [],
+	"mappings": "AACA,AACI,QADI,CACJ,EAAE,AAAC,CGiOC,SAAS,CAAE,IAAc,CACzB,SAAS,CAAE,MAAoB,CHhO/B,MAAM,CAAE,YAAY,CACvB"
 }
