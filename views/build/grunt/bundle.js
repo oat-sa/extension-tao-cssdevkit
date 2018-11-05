@@ -1,51 +1,43 @@
-module.exports = function(grunt) { 
+/**
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2014-2018 (original work) Open Assessment Technologies SA;
+ */
 
-    var requirejs   = grunt.config('requirejs') || {};
-    var clean       = grunt.config('clean') || {};
-    var copy        = grunt.config('copy') || {};
+/**
+ * configure the extension bundles
+ * @author Bertrand Chevrier <bertrand@taotesting.com>
+ */
+module.exports = function(grunt) {
+    'use strict';
 
-    var root        = grunt.option('root');
-    var libs        = grunt.option('mainlibs');
-    var ext         = require(root + '/tao/views/build/tasks/helpers/extensions')(grunt, root);
-    var out         = 'output';
-
-
-    /**
-     * Remove bundled and bundling files
-     */
-    clean.taocssdevkitbundle = [out];
-    
-    /**
-     * Compile tao files into a bundle 
-     */
-    requirejs.taocssdevkitbundle = {
-        options: {
-            baseUrl : '../js',
-            dir : out,
-            mainConfigFile : './config/requirejs.build.js',
-            paths : { 'taoCssDevKit' : root + '/taoCssDevKit/views/js' },
-            modules : [{
-                name: 'taoCssDevKit/controller/routes',
-                include : ext.getExtensionsControllers(['taoCssDevKit']),
-                exclude : ['mathJax'].concat(libs)
-            }]
+    grunt.config.merge({
+        bundle : {
+            taocssdevkit : {
+                options : {
+                    extension : 'taoCssDevKit',
+                    outputDir : 'loader',
+                    bundles : [{
+                        name : 'taoCssDevKit',
+                        default : true
+                    }]
+                }
+            }
         }
-    };
-
-    /**
-     * copy the bundles to the right place
-     */
-    copy.taocssdevkitbundle = {
-        files: [
-            { src: [out + '/taoCssDevKit/controller/routes.js'],  dest: root + '/taoCssDevKit/views/js/controllers.min.js' },
-            { src: [out + '/taoCssDevKit/controller/routes.js.map'],  dest: root + '/taoCssDevKit/views/js/controllers.min.js.map' }
-        ]
-    };
-
-    grunt.config('clean', clean);
-    grunt.config('requirejs', requirejs);
-    grunt.config('copy', copy);
+    });
 
     // bundle task
-    grunt.registerTask('taocssdevkitbundle', ['clean:taocssdevkitbundle', 'requirejs:taocssdevkitbundle', 'copy:taocssdevkitbundle']);
+    grunt.registerTask('taocssdevkitbundle', ['bundle:taocssdevkit']);
 };
