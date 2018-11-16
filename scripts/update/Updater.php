@@ -27,19 +27,19 @@ use taoItems_models_classes_itemModel;
 
 /**
  * TAO CSS DevKit Updater.
- * 
+ *
  * @author Jérôme Bogaerts <jerome@taotesting.com>
  */
 class Updater extends \common_ext_ExtensionUpdater
 {
-    
+
     /**
      * Perform update from $currentVersion to $versionUpdatedTo.
-     * 
+     *
      * @param string $currentVersion
      * @return string $versionUpdatedTo
      */
-    public function update($initialVersion) 
+    public function update($initialVersion)
     {
         $currentVersion = $initialVersion;
 
@@ -50,21 +50,21 @@ class Updater extends \common_ext_ExtensionUpdater
             self::migrateFrom09To091();
             $currentVersion = '0.9.1';
         }
-        
+
         if ($currentVersion == '0.9.1') {
             $currentVersion = '0.9.2';
         }
         $this->setVersion($currentVersion);
-        
+
         if($this->isVersion('0.9.2')){
             $this->setVersion('0.9.3');
         }
 
-        $this->skip('0.9.3', '1.1.2');
+        $this->skip('0.9.3', '3.0.0');
 
         return null;
     }
-    
+
     static private function migrateFrom09To091() {
         // Get all items...
         $itemService = \taoItems_models_classes_ItemsService::singleton();
@@ -72,16 +72,16 @@ class Updater extends \common_ext_ExtensionUpdater
         foreach ($itemClass->getInstances(true) as $item) {
             if ($itemService->hasItemModel($item, array(taoItems_models_classes_itemModel::CLASS_URI_QTI))) {
                 $qtiXml = Service::singleton()->getDataItemByRdfItem($item)->toXML();
-                
+
                 if (empty($qtiXml) === false) {
                     $qtiDom = new \DOMDocument('1.0', 'UTF-8');
                     $qtiDom->loadXML($qtiXml);
 
                     $path = $itemService->getItemDirectory($item)->getPrefix();
-                    
+
                     // Get all stylesheet hrefs.
                     $hrefs = Utils::getStylesheetHrefs($qtiDom);
-                    
+
                     // Make sure the hrefs are refering existing files.
                     for ($i = 0; $i < count($hrefs); $i++) {
                         $href = $hrefs[$i];
@@ -93,7 +93,7 @@ class Updater extends \common_ext_ExtensionUpdater
                             $altFileName = \tao_helpers_File::getSafeFileName($pathinfo['basename']);
                             $dirSep = ($pathinfo['dirname'] !== '.') ? $pathinfo['dirname'] . DIRECTORY_SEPARATOR : '';
                             $altPath = $path. $dirSep . $altFileName;
-                    
+
                             if (is_readable($altPath)) {
                                 // Bingo! We rebind.
                                 $hrefs[$i] = $dirSep . $altFileName;
@@ -105,19 +105,19 @@ class Updater extends \common_ext_ExtensionUpdater
                             }
                         }
                     }
-                    
+
                     // Reput them in the item with cleanup enabled
                     // to solve the XMLSchema validation issue.
                     if (count($hrefs) > 0) {
                         $href = array_shift($hrefs);
                         Utils::appendStylesheet($qtiDom, $href, true);
                     }
-                    
+
                     // Append the rest of the stylesheets.
                     foreach ($hrefs as $href) {
                         Utils::appendStylesheet($qtiDom, $href);
                     }
-                    
+
                     Service::singleton()->saveXmlItemToRdfItem($qtiDom->saveXML(), $item);
                 }
             }
