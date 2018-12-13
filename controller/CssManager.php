@@ -42,6 +42,11 @@ class CssManager extends \tao_actions_CommonModule
         $this->setView('CssManager/index.tpl');
     }
 
+    /**
+     * Apply batch tool to class
+     *
+     * @throws \common_exception_Error
+     */
     public function apply()
     {
         $cssFileData = $file = \tao_helpers_Http::getUploadedFile('content');
@@ -51,7 +56,10 @@ class CssManager extends \tao_actions_CommonModule
 
         $this->returnJson($report);
     }
-    
+
+    /**
+     * Reset all custom CSS in the items
+     */
     public function reset()
     {
         //reset all custom CSS in the items
