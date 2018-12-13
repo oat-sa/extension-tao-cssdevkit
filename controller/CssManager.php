@@ -54,7 +54,7 @@ class CssManager extends \tao_actions_CommonModule
 
         $this->returnJson($report);
     }
-    
+
     /**
      *
      */
