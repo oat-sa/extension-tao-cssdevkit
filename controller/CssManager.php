@@ -42,9 +42,6 @@ class CssManager extends \tao_actions_CommonModule
         $this->setView('CssManager/index.tpl');
     }
 
-    /**
-     *
-     */
     public function apply()
     {
         $cssFileData = $file = \tao_helpers_Http::getUploadedFile('content');
@@ -54,10 +51,7 @@ class CssManager extends \tao_actions_CommonModule
 
         $this->returnJson($report);
     }
-
-    /**
-     *
-     */
+    
     public function reset()
     {
         //reset all custom CSS in the items
