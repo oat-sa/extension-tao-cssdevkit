@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.1-dev\n"
-"PO-Revision-Date: 2015-06-18T18:10:43\n"
+"Project-Id-Version: TAO 3.3.0-sprint91\n"
+"PO-Revision-Date: 2018-12-14T16:11:56\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: en-US\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
-msgid "%1s has been applied to %2s items', basename($destPath), $count) : __('CSS was not applied to any items"
+msgid "%1s has been applied to %2s items"
 msgstr ""
 
 msgid "Apply CSS to Items"
@@ -24,6 +24,9 @@ msgid "CSS Dev Kit"
 msgstr ""
 
 msgid "CSS Development Kit"
+msgstr ""
+
+msgid "CSS was not applied to any items"
 msgstr ""
 
 msgid "Download CSS Development Kit"
