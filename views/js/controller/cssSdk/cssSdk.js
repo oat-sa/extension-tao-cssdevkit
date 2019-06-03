@@ -24,7 +24,7 @@
 define([
     'jquery',
     'i18n',
-    'ui',
+    'uikitLoader',
     'ui/uploader',
     'ui/feedback',
     'tpl!taoCssDevKit/controller/templates/report'
