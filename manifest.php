@@ -24,12 +24,12 @@ return array(
 	'label' => 'Css Development Kit',
 	'description' => '',
     'license' => 'GPL-2.0',
-    'version' => '3.1.0',
+    'version' => '3.2.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
 	    'taoItems' => '>=6.0.0',
 	    'taoQtiItem' => '>=18.0.0',
-        'taoDataUri' => '>=2.0.0'
+        'taoDataUri' => '>=2.1.0'
     ),
 	// for compatibility
 	'dependencies' => array('tao'),
