@@ -29,6 +29,7 @@ use taoItems_models_classes_itemModel;
  * TAO CSS DevKit Updater.
  *
  * @author Jérôme Bogaerts <jerome@taotesting.com>
+ * @deprecated use migrations instead. See https://github.com/oat-sa/generis/wiki/Tao-Update-Process
  */
 class Updater extends \common_ext_ExtensionUpdater
 {
@@ -63,6 +64,11 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('0.9.3', '3.1.0');
 
         return null;
+        
+        //Updater files are deprecated. Please use migrations.
+        //See: https://github.com/oat-sa/generis/wiki/Tao-Update-Process
+
+        $this->setVersion($this->getExtension()->getManifest()->getVersion());
     }
 
     static private function migrateFrom09To091() {
